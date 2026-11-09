@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    background: #f3f5f7;
+    color: #243247;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 24px;
+    background: white;
+    border-radius: 8px;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.boton,
+button {
+    display: inline-block;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 4px;
+    background: #2458a6;
+    color: white;
+    text-decoration: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.secundario {
+    background: #ffbc31;
+}
+
+.peligro {
+    background: #b53535;
+}
+
+.tabla {
+    overflow-x: auto;
+    margin-top: 24px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #edf1f6;
+}
+
+.acciones {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.acciones form {
+    margin: 0;
+}
+
+.formulario {
+    max-width: 500px;
+}
+
+label {
+    display: block;
+    margin: 18px 0 6px;
+}
+
+input:not([type="hidden"]),
+select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #aab2bf;
+    border-radius: 4px;
+    font: inherit;
+}
+
+.formulario .acciones {
+    margin-top: 24px;
+}
+
+.error {
+    color: #a12222;
+}
+
+@media (max-width: 650px) {
+    main {
+        margin: 16px;
+        padding: 16px;
+    }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulario de producto</title>
+    <link rel="stylesheet" th:href="@{/estilos.css}">
+</head>
+<body>
+<main>
+    <h1 th:text="${producto.id == null ? 'Nuevo producto' : 'Editar producto'}"></h1>
+        <form th:action="${producto.id == null} ? @{/productos/insertar} : @{/productos/actualizar/{id}(id=${producto.id})}" th:object="${producto}" method="post" class="formulario">
+        <input type="hidden" th:field="*{id}">
+        <ul class="error" th:if="${#fields.hasAnyErrors()}">
+            <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+        </ul>
+
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" th:field="*{nombre}" maxlength="100" required>
+
+        <label for="precio">Precio</label>
+        <input id="precio" type="number" th:field="*{precio}" min="0" max="99999999.99" step="0.01" required>
+
+        <label for="categoria">Categoría</label>
+        <select id="categoria" th:field="*{categoria.id}" required>
+            <option value="">Selecciona una categoría</option>
+            <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+        </select>
+        <p th:if="${#lists.isEmpty(categorias)}">Primero registra una categoría en la base de datos.</p>
+
+        <div class="acciones">
+            <button type="submit">Guardar</button>
+            <a class="boton secundario" th:href="@{/productos}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

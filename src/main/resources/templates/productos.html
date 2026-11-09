@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Productos</title>
+    <link rel="stylesheet" th:href="@{/estilos.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<main>
+    <h1>Productos</h1>
+    <p>Administración de productos y sus categorías.</p>
+    <a class="boton" th:href="@{/productos/nuevo}">Nuevo producto</a>
+    <div class="tabla">
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Categoría</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(productos)}"><td colspan="5">No hay productos registrados.</td></tr>
+            <tr th:each="producto : ${productos}">
+                <td th:text="${producto.id}"></td>
+                <td th:text="${producto.nombre}"></td>
+                <td th:text="${#numbers.formatDecimal(producto.precio, 1, 2)}"></td>
+                <td th:text="${producto.categoria.nombre}"></td>
+                <td class="acciones">
+                    <a class="boton secundario" th:href="@{/productos/editar/{id}(id=${producto.id})}">Editar</a>
+                    <form th:id="'form-eliminar-' + ${producto.id}" th:action="@{/productos/eliminar/{id}(id=${producto.id})}" method="post">
+                        <button class="peligro" type="button" th:onclick="'confirmarEliminacion(' + ${producto.id} + ')'">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<script th:if="${exito}">
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: '[[${exito}]]',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+</script>
+<script>
+    function confirmarEliminacion(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Esta acción no se puede deshacer!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#b53535',
+            cancelButtonColor: '#5d6878',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('form-eliminar-' + id).submit();
+            }
+        });
+    }
+</script>
+</body>
+</html>
