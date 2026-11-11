@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import com.progweb.actividad3.model.Producto;
 import com.progweb.actividad3.servicio.CategoriaServicio;
 import com.progweb.actividad3.servicio.ProductoServicio;
@@ -71,11 +75,22 @@ public class ProductoControlador {
         return "formulario";
     }
 
-    @PostMapping("/productos/actualizar/{id}")
+    @PutMapping("/productos/actualizar")
+    public String actualizarDesdeBody(@Valid @ModelAttribute("producto") Producto producto,
+                                      BindingResult resultado, Model modelo,
+                                      RedirectAttributes redirectAttributes) {
+        if (producto.getId() == null || producto.getId() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Envía un id válido en el body");
+        }
+        return actualizar(producto.getId(), producto, resultado, modelo, redirectAttributes);
+    }
+
+    @PutMapping("/productos/actualizar/{id}")
     public String actualizar(@PathVariable("id") Long id,
                              @Valid @ModelAttribute("producto") Producto producto,
                              BindingResult resultado, Model modelo,
                              RedirectAttributes redirectAttributes) { // 1. Añadir RedirectAttributes
+        producto.setId(id);
         if (!resultado.hasErrors()) {
             try {
                 productoServicio.actualizarProducto(id, producto);
@@ -89,7 +104,7 @@ public class ProductoControlador {
         return "formulario";
     }
 
-    @PostMapping("/productos/eliminar/{id}")
+    @DeleteMapping("/productos/eliminar/{id}")
     public String eliminar(@PathVariable("id") Long id,
                            RedirectAttributes redirectAttributes) { // 1. Añadir RedirectAttributes
         if (productoServicio.buscarProducto(id) != null) {

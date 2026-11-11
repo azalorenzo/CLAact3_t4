@@ -11,6 +11,7 @@
     <h1 th:text="${producto.id == null ? 'Nuevo producto' : 'Editar producto'}"></h1>
         <form th:action="${producto.id == null} ? @{/productos/insertar} : @{/productos/actualizar/{id}(id=${producto.id})}" th:object="${producto}" method="post" class="formulario">
         <input type="hidden" th:field="*{id}">
+        <input th:if="${producto.id != null}" type="hidden" name="_method" value="PUT">
         <ul class="error" th:if="${#fields.hasAnyErrors()}">
             <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
         </ul>

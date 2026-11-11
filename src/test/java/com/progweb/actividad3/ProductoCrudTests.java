@@ -36,7 +36,7 @@ class ProductoCrudTests {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Categoria de prueba")));
 
-        navegador.perform(post("/productos/guardar")
+        navegador.perform(post("/productos/insertar")
                 .param("nombre", "Producto de prueba CRUD")
                 .param("precio", "25.50")
                 .param("categoria.id", categoria.getId().toString()))
@@ -57,7 +57,7 @@ class ProductoCrudTests {
 
         navegador.perform(get("/productos/editar/" + id))
                 .andExpect(status().isOk());
-        navegador.perform(post("/productos/guardar")
+        navegador.perform(put("/productos/actualizar/" + id)
                 .param("id", id.toString())
                 .param("nombre", "Producto actualizado CRUD")
                 .param("precio", "30.00")
@@ -67,14 +67,14 @@ class ProductoCrudTests {
         entidad.clear();
         assertEquals("Producto actualizado CRUD", productoRepositorio.findById(id).orElseThrow().getNombre());
 
-        navegador.perform(post("/productos/guardar")
+        navegador.perform(post("/productos/insertar")
                 .param("nombre", "Producto invalido")
                 .param("precio", "-1")
                 .param("categoria.id", categoria.getId().toString()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("producto", "precio"));
 
-        navegador.perform(post("/productos/eliminar/" + id))
+        navegador.perform(delete("/productos/eliminar/" + id))
                 .andExpect(redirectedUrl("/productos"));
         entidad.flush();
         entidad.clear();

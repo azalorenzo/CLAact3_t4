@@ -35,3 +35,27 @@ El sistema gestiona dos entidades principales conectadas mediante una relación 
 ### 4. Método POST 
 *Prueba del método guardar mediante Bruno para verificar que la API procesa la solicitud y devuelve una respuesta correcta.*
 ![Metodo POST probado en bruno](img/post.png)
+
+## Actualizar y eliminar desde Bruno
+
+Arranca esta copia con `mvnw.cmd spring-boot:run` y la base de datos configurada.
+
+### Actualizar
+
+- Método: PUT
+- URL: http://localhost:8088/productos/actualizar
+- Body: Form URL Encoded (`application/x-www-form-urlencoded`). No usar JSON.
+- Campos: `id` = 1, `nombre` = Producto actualizado, `precio` = 30.00, `categoria.id` = 1.
+- Sustituye los IDs por un producto y una categoría existentes. El campo `id` es obligatorio en el cuerpo. También se conserva PUT `/productos/actualizar/{id}` para las vistas.
+
+### Eliminar
+
+- Método: DELETE
+- URL: http://localhost:8088/productos/eliminar/1
+- Sin cuerpo. Sustituye 1 por el ID del producto que quieras eliminar.
+
+Una operación correcta devuelve una redirección 302 hacia `/productos`. Si Bruno sigue
+redirecciones automáticamente, puede mostrar el HTML del listado con estado 200.
+Si los campos de actualización son inválidos, se devuelve el formulario HTML con los errores.
+Las vistas usan POST con `_method=PUT` o `_method=DELETE`; Spring transforma el método.
+La creación continúa usando POST `/productos/insertar`.

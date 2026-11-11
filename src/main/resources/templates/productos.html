@@ -27,6 +27,7 @@
                 <td class="acciones">
                     <a class="boton secundario" th:href="@{/productos/editar/{id}(id=${producto.id})}">Editar</a>
                     <form th:id="'form-eliminar-' + ${producto.id}" th:action="@{/productos/eliminar/{id}(id=${producto.id})}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
                         <button class="peligro" type="button" th:onclick="'confirmarEliminacion(' + ${producto.id} + ')'">Eliminar</button>
                     </form>
                 </td>
